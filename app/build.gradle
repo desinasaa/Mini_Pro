@@ -1,0 +1,128 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.getkeepsafe.dexcount'
+
+android {
+    compileSdkVersion project.targetSdkVersion
+
+    defaultConfig {
+        minSdkVersion project.minSdkVersion
+        targetSdkVersion project.targetSdkVersion
+        versionName project.versionName
+        vectorDrawables.useSupportLibrary = true
+
+    }
+
+    sourceSets {
+        lightningPlus.setRoot('src/LightningPlus')
+        lightningLite.setRoot('src/LightningLite')
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles 'proguard-project.txt'
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles 'proguard-project.txt'
+        }
+    }
+    flavorDimensions "capabilities"
+
+    productFlavors {
+        lightningPlus {
+            dimension "capabilities"
+            buildConfigField "boolean", "FULL_VERSION", "Boolean.parseBoolean(\"true\")"
+            applicationId "com.ucimini.internetbrowserpro"
+            versionCode project.versionCode_plus
+        }
+
+        lightningLite {
+            dimension "capabilities"
+            buildConfigField "boolean", "FULL_VERSION", "Boolean.parseBoolean(\"false\")"
+            applicationId "com.ucimini.internetbrowserlite"
+            versionCode project.versionCode_lite
+        }
+    }
+    lintOptions {
+        abortOnError true
+    }
+
+    packagingOptions {
+        exclude '.readme'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+}
+
+dexcount {
+    includeClasses = false
+    includeFieldCount = false
+    format = "tree"
+    orderByMethodCount = true
+    verbose = false
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12'
+
+    // support libraries
+    def supportLibVersion = '25.4.0'
+    //noinspection GradleCompatible
+    implementation "com.android.support:palette-v7:$supportLibVersion"
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:design:$supportLibVersion"
+    implementation "com.android.support:recyclerview-v7:$supportLibVersion"
+    implementation "com.android.support:support-v4:$supportLibVersion"
+
+
+    // html parsing for reading mode
+    implementation 'org.jsoup:jsoup:1.10.2'
+
+    // dependency injection
+    def daggerVersion = '2.11'
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    compileOnly 'javax.annotation:jsr250-api:1.0'
+
+    // view binding
+    def butterknifeVersion = '8.6.0'
+    implementation "com.jakewharton:butterknife:$butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+
+    // permissions
+    implementation 'com.anthonycr.grant:permissions:1.1.2'
+
+    // proxy support
+    // implementation 'net.i2p.android:client:0.8'
+
+    implementation 'com.squareup.okhttp3:okhttp:3.8.0'
+
+    // tor proxy
+    def netcipherVersion = '2.0.0-alpha1'
+    implementation "info.guardianproject.netcipher:netcipher:$netcipherVersion"
+    implementation "info.guardianproject.netcipher:netcipher-webkit:$netcipherVersion"
+
+    implementation 'com.anthonycr.bonsai:bonsai:1.1.0'
+
+    implementation 'com.anthonycr.progress:animated-progress:1.0'
+
+    // memory leak analysis
+    def leakCanaryVersion = '1.5.1'
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    //ads
+    implementation "com.google.android.gms:play-services-ads:11.8.0"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+}

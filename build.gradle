@@ -1,0 +1,32 @@
+buildscript {
+    ext.kotlin_version = '1.3.0'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url "https://maven.google.com"
+        }
+    }
+}
+
+ext {
+    minSdkVersion = 14
+    targetSdkVersion = 28
+    buildToolsVersion = '28.0.3'
+
+    versionName = '0.4'
+    versionCode_lite = 14
+    versionCode_plus = 14
+}
